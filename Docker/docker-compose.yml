@@ -1,0 +1,14 @@
+version: '3'
+services:
+  db:
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    container_name: riglog_db
+    restart: always
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_SA_PASSWORD: Riglog12345@
+      MSSQL_PID: Developer
+    ports:
+      - '1433:1433'
+#    volumes:
+#      - ./mssql:/var/opt/mssql/data
