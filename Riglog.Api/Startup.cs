@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +26,8 @@ namespace Riglog.Api
                 Configuration.GetConnectionString("RiglogDatabase"),
                 opts => opts.CommandTimeout((int)TimeSpan.FromSeconds(20).TotalSeconds)
                     .MigrationsAssembly("Riglog.Api.Data")));
+            
+            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
