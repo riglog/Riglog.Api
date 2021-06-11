@@ -9,7 +9,8 @@ using Riglog.Api.Data;
 namespace Riglog.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [ApiVersion("1")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
     public class DbController : ControllerBase
     {

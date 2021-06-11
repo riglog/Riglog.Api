@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Riglog.Api.Configurations;
 using Riglog.Api.Data;
 
 namespace Riglog.Api
@@ -28,6 +31,9 @@ namespace Riglog.Api
                     .MigrationsAssembly("Riglog.Api.Data")));
             
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+            
+            services.AddSingleton<IConfigureOptions<ApiVersioningOptions>, ConfigureApiVersioningOptions>();
+            services.AddApiVersioning();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
