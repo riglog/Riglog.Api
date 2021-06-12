@@ -36,7 +36,7 @@ namespace Riglog.Api.Models
         }
 
         [Required]
-        [RegularExpression("^[a-zA-Z0-9_\\.-]+@([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$", ErrorMessage = "E-mail is not valid")]
+        [EmailAddress]
         public string Email
         {
             get => _email;
