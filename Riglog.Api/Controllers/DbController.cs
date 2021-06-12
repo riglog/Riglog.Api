@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using Riglog.Api.Data;
 namespace Riglog.Api.Controllers
 {
     [ApiController]
+    [Authorize]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
