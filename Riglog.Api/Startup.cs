@@ -15,6 +15,9 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Riglog.Api.Configurations;
 using Riglog.Api.Data;
+using Riglog.Api.Mappings;
+using Riglog.Api.Services.Interfaces;
+using Riglog.Api.Services.Repositories;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Riglog.Api
@@ -51,6 +54,10 @@ namespace Riglog.Api
             
             services.AddSingleton<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerGenOptions>();
             services.AddSwaggerGen();
+            
+            services.AddAutoMapper(typeof(MappingProfile));
+            
+            services.AddTransient<IUserRepository, UserRepository>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
