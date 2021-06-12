@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
@@ -11,11 +14,13 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Riglog.Api.Configurations;
 using Riglog.Api.Data;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Riglog.Api
 {
     public class Startup
     {
+        private const string SwaggerBasePath = "api";
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -30,26 +35,43 @@ namespace Riglog.Api
                 opts => opts.CommandTimeout((int)TimeSpan.FromSeconds(20).TotalSeconds)
                     .MigrationsAssembly("Riglog.Api.Data")));
             
+            services.AddVersionedApiExplorer(o => o.GroupNameFormat = "'v'VVV");
+            
             services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
             
             services.AddSingleton<IConfigureOptions<ApiVersioningOptions>, ConfigureApiVersioningOptions>();
             services.AddApiVersioning();
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Riglog.Api", Version = "v1" });
-            });
+            
+            services.AddSingleton<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerGenOptions>();
+            services.AddSwaggerGen();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Riglog.Api v1"));
             }
+            
+            app.UseSwagger(c =>
+            {
+                c.RouteTemplate = SwaggerBasePath + "/{documentName}/swagger/swagger.json";
+                c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
+                {
+                    swaggerDoc.Servers = new List<OpenApiServer> { new() { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" } };
+                });
+            });
+            app.UseSwaggerUI(
+                c =>
+                {
+                    foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions.OrderByDescending(x => x.ApiVersion))
+                    {
+                        c.SwaggerEndpoint($"/{SwaggerBasePath}/{description.GroupName}/swagger/swagger.json", "Riglog API " + description.GroupName.ToUpperInvariant());
+                        c.RoutePrefix = $"{SwaggerBasePath}/swagger";
+                    }
+                });
 
             app.UseHttpsRedirection();
 
@@ -57,10 +79,7 @@ namespace Riglog.Api
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
