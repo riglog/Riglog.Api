@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Riglog.Api.Data.Entities;
+using Riglog.Api.Data.Sql.Entities;
 
-namespace Riglog.Api.Data
+namespace Riglog.Api.Data.Sql
 {
     public class AppDbContext : DbContext
     {

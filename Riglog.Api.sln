@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.810.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riglog.Api", "Riglog.Api\Riglog.Api.csproj", "{CBC4A19F-BC1F-4CAF-B4EC-72E8CF672185}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riglog.Api.Data", "Riglog.Api.Data\Riglog.Api.Data.csproj", "{76E3EB3C-86F1-4A19-BAF8-EDFC5C450D04}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riglog.Api.Data.Sql", "Riglog.Api.Data.Sql\Riglog.Api.Data.Sql.csproj", "{76E3EB3C-86F1-4A19-BAF8-EDFC5C450D04}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riglog.Api.Services", "Riglog.Api.Services\Riglog.Api.Services.csproj", "{E13E64FF-914D-468F-9BDE-6222452A281A}"
 EndProject

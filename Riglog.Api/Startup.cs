@@ -14,10 +14,12 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Riglog.Api.Configurations;
-using Riglog.Api.Data;
-using Riglog.Api.Mappings;
+using Riglog.Api.Data.Sql;
+using Riglog.Api.Data.Sql.Interfaces;
+using Riglog.Api.Data.Sql.Repositories;
+using Riglog.Api.Services;
 using Riglog.Api.Services.Interfaces;
-using Riglog.Api.Services.Repositories;
+using Riglog.Api.Services.Mappings;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Riglog.Api
@@ -37,7 +39,7 @@ namespace Riglog.Api
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
                 Configuration.GetConnectionString("RiglogDatabase"),
                 opts => opts.CommandTimeout((int)TimeSpan.FromSeconds(20).TotalSeconds)
-                    .MigrationsAssembly("Riglog.Api.Data")));
+                    .MigrationsAssembly("Riglog.Api.Data.Sql")));
             
             services.AddVersionedApiExplorer(o => o.GroupNameFormat = "'v'VVV");
             
@@ -58,6 +60,9 @@ namespace Riglog.Api
             services.AddAutoMapper(typeof(MappingProfile));
             
             services.AddTransient<IUserRepository, UserRepository>();
+            
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAuthService, AuthService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider apiVersionDescriptionProvider)

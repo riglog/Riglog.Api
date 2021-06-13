@@ -1,6 +1,6 @@
-using Riglog.Api.Data.Entities;
+using Riglog.Api.Data.Sql.Entities;
 
-namespace Riglog.Api.Services.Interfaces
+namespace Riglog.Api.Data.Sql.Interfaces
 {
     public interface IUserRepository : IGenericRepository<User>
     {

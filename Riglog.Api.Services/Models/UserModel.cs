@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Riglog.Api.Models
+namespace Riglog.Api.Services.Models
 {
     public class UserModel
     {

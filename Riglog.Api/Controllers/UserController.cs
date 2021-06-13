@@ -1,30 +1,24 @@
 using System;
 using System.Collections.Generic;
-using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Riglog.Api.Data.Entities;
-using Riglog.Api.Models;
 using Riglog.Api.Services.Interfaces;
+using Riglog.Api.Services.Models;
 
 namespace Riglog.Api.Controllers
 {
     [ApiController]
-    [Authorize]
+    //[Authorize]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
-        private readonly IMapper _mapper;
-        
-        public UserController(IUserRepository userRepository, IMapper mapper)
+        private readonly IUserService _userService;
+
+        public UserController(IUserService userService)
         {
-            _userRepository = userRepository;
-            _mapper = mapper;
+            _userService = userService;
         }
         
         /// <summary>
@@ -35,9 +29,7 @@ namespace Riglog.Api.Controllers
         [HttpGet("all")]
         public IActionResult All()
         {
-            var users = _userRepository.GetAll();
-           
-            return Ok(_mapper.Map<List<UserModel>>(users));
+            return Ok(_userService.GetAll());
         }
         
         /// <summary>
@@ -52,8 +44,7 @@ namespace Riglog.Api.Controllers
         {
             try
             {
-                var user = _userRepository.GetById(userId);
-                return Ok(_mapper.Map<UserModel>(user));
+                return Ok(_userService.GetById(userId));
             }
             catch (Exception)
             {
@@ -71,12 +62,9 @@ namespace Riglog.Api.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] UserModel userModel)
         {
-            var user = _mapper.Map<User>(userModel);
-            
             try
             {
-                _userRepository.Create(user);
-                return Ok(user.Id);
+                return Ok(_userService.Create(userModel));
             }
             catch (Exception)
             {
@@ -95,11 +83,7 @@ namespace Riglog.Api.Controllers
         {
             try
             {
-                var currentUser = _userRepository.GetById(userModel.Id);
-                var user = _mapper.Map(userModel, currentUser);
-                user.UpdatedDate = DateTime.Now;
-                _userRepository.Update(user);
-                return Ok(user.Id);
+                return Ok(_userService.Update(userModel));
             }
             catch (Exception)
             {
@@ -118,7 +102,7 @@ namespace Riglog.Api.Controllers
         {
             try
             {
-                _userRepository.Delete(userId);
+                _userService.Delete(userId);
                 return Ok();
             }
             catch (Exception)
@@ -140,13 +124,7 @@ namespace Riglog.Api.Controllers
         {
             try
             {
-                var user = _userRepository.GetById(userId);
-            
-                var hasher = new PasswordHasher<User>();
-                user.Password = hasher.HashPassword(user, password);
-                
-                _userRepository.Update(user);
-                
+                _userService.SetPassword(userId, password);
                 return Ok();
             }
             catch (Exception)

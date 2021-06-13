@@ -1,4 +1,4 @@
-﻿namespace Riglog.Api.Data.Entities
+﻿namespace Riglog.Api.Data.Sql.Entities
 {
     public class User : BaseEntity
     {

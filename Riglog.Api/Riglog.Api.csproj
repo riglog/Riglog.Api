@@ -23,7 +23,7 @@
     <None Remove="Microsoft.EntityFrameworkCore.Tools" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Riglog.Api.Data\Riglog.Api.Data.csproj">
+    <ProjectReference Include="..\Riglog.Api.Data.Sql\Riglog.Api.Data.Sql.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
     <ProjectReference Include="..\Riglog.Api.Services\Riglog.Api.Services.csproj">

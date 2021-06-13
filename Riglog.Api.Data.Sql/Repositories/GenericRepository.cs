@@ -1,10 +1,9 @@
 using System;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Riglog.Api.Data;
-using Riglog.Api.Services.Interfaces;
+using Riglog.Api.Data.Sql.Interfaces;
 
-namespace Riglog.Api.Services.Repositories
+namespace Riglog.Api.Data.Sql.Repositories
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
     {

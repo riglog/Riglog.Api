@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace Riglog.Api.Services.Interfaces
+namespace Riglog.Api.Data.Sql.Interfaces
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {

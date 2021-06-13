@@ -5,7 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Riglog.Api.Data;
+using Riglog.Api.Data.Sql;
+
 
 namespace Riglog.Api.Controllers
 {

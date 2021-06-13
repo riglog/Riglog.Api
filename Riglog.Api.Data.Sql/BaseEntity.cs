@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Riglog.Api.Data
+namespace Riglog.Api.Data.Sql
 {
     public class BaseEntity : IEntity
     {

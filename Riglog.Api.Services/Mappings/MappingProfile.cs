@@ -1,8 +1,8 @@
 using AutoMapper;
-using Riglog.Api.Data.Entities;
-using Riglog.Api.Models;
+using Riglog.Api.Data.Sql.Entities;
+using Riglog.Api.Services.Models;
 
-namespace Riglog.Api.Mappings
+namespace Riglog.Api.Services.Mappings
 {
     public class MappingProfile : Profile
     {

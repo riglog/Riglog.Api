@@ -1,9 +1,8 @@
 using System.Linq;
-using Riglog.Api.Data;
-using Riglog.Api.Data.Entities;
-using Riglog.Api.Services.Interfaces;
+using Riglog.Api.Data.Sql.Entities;
+using Riglog.Api.Data.Sql.Interfaces;
 
-namespace Riglog.Api.Services.Repositories
+namespace Riglog.Api.Data.Sql.Repositories
 {
     public class UserRepository : GenericRepository<User>, IUserRepository
     {
