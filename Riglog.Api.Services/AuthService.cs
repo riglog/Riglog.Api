@@ -38,7 +38,9 @@ namespace Riglog.Api.Services
 
             var claims = new List<Claim>
             {
-                new(ClaimTypes.NameIdentifier, user.Id.ToString())
+                new(ClaimTypes.PrimarySid, user.Id.ToString()),
+                new(ClaimTypes.NameIdentifier, user.Username),
+                new(ClaimTypes.Role, (user.IsSuperAdmin ? "Admin" : "User")),
             };
 
             var tokenOptions = new JwtSecurityToken(
