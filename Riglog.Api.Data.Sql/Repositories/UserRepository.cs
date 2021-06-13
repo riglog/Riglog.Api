@@ -14,7 +14,7 @@ namespace Riglog.Api.Data.Sql.Repositories
         
         public User GetByUsername(string username)
         {
-            return _dbContext.Users.Single(q => q.Username == username);
+            return _dbContext.Users.SingleOrDefault(q => q.Username == username);
         }
     }
 }

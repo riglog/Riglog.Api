@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,17 +11,18 @@ using Riglog.Api.Services.Interfaces;
 namespace Riglog.Api.Controllers
 {
     [ApiController]
-    [Authorize]
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [Produces("application/json")]
     public class DbController : ControllerBase
     {
         private readonly IDbService _dbService;
+        private readonly ISeedService _seedService;
 
-        public DbController(IDbService dbService)
+        public DbController(IDbService dbService, ISeedService seedService)
         {
             _dbService = dbService;
+            _seedService = seedService;
         }
 
         /// <summary>
@@ -49,5 +51,22 @@ namespace Riglog.Api.Controllers
             return Ok();
         }
         
+        /// <summary>
+        /// Create admin user
+        /// </summary>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpPost("seed/admin")]
+        public IActionResult CreateSuperAdmin()
+        {
+            try
+            {
+                _seedService.SeedAdminUser();
+                return Ok();
+            }
+            catch (Exception)
+            {
+                return Forbid();
+            }
+        }
     }
 }
