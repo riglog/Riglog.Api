@@ -63,6 +63,7 @@ namespace Riglog.Api
             
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IAuthService, AuthService>();
+            services.AddTransient<IDbService, DbService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider apiVersionDescriptionProvider)

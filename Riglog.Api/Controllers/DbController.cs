@@ -4,8 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Riglog.Api.Data.Sql;
+using Riglog.Api.Services.Interfaces;
 
 
 namespace Riglog.Api.Controllers
@@ -17,11 +16,11 @@ namespace Riglog.Api.Controllers
     [Produces("application/json")]
     public class DbController : ControllerBase
     {
-        private readonly AppDbContext _dbContext;
+        private readonly IDbService _dbService;
 
-        public DbController(AppDbContext dbContext)
+        public DbController(IDbService dbService)
         {
-            _dbContext = dbContext;
+            _dbService = dbService;
         }
 
         /// <summary>
@@ -34,7 +33,7 @@ namespace Riglog.Api.Controllers
         [HttpGet("check")]
         public async Task<IActionResult> MigrationsCheck()
         {
-            var migrations = await _dbContext.Database.GetPendingMigrationsAsync();
+            var migrations = await _dbService.GetMigrationsAsync();
 
             return migrations.Any() ? Accepted(migrations) : Ok();
         }
@@ -46,7 +45,7 @@ namespace Riglog.Api.Controllers
         [HttpPatch("update")]
         public async Task<IActionResult> Migrate()
         {
-            await _dbContext.Database.MigrateAsync();
+            await _dbService.MigrateAsync();
             return Ok();
         }
         
