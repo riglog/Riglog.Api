@@ -15,25 +15,24 @@ namespace Riglog.Api.Services
             _userRepository = userRepository;
         }
         
-        public void SeedAdminUser()
+        public void SeedAdminUser(string adminPassword)
         {
-            const string adminpassword = "riglog12345";
-            const string adminuser = "riglogadmin";
+            const string adminUser = "riglogadmin";
 
             var admin = new User
             {
-                Username = adminuser,
+                Username = adminUser,
                 FirstName = "Riglog",
                 LastName = "Admin",
                 Email = "admin@riglog.cz",
-                CreatedBy = adminuser,
-                UpdatedBy = adminuser,
+                CreatedBy = adminUser,
+                UpdatedBy = adminUser,
                 IsSuperAdmin = true
             };
             _userRepository.Create(admin);
             
             var hasher = new PasswordHasher<User>();
-            admin.Password = hasher.HashPassword(admin, adminpassword);
+            admin.Password = hasher.HashPassword(admin, adminPassword);
             
             _userRepository.Update(admin);
         }

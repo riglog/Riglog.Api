@@ -11,7 +11,7 @@ namespace Riglog.Api.Configurations
             options.ReportApiVersions = true;
             options.AssumeDefaultVersionWhenUnspecified = true;
             options.DefaultApiVersion = ApiVersion.Default;
-            options.ApiVersionReader = new MediaTypeApiVersionReader("x-api-version");
+            //options.ApiVersionReader = new MediaTypeApiVersionReader("x-api-version");
         }
     }
 }

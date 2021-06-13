@@ -116,7 +116,7 @@ namespace Riglog.Api.Controllers
         /// Set user password
         /// </summary>
         /// <param name="userId">Guid</param>
-        /// <param name="password"></param>
+        /// <param name="password">Password</param>
         /// <response code="200">Success</response>
         /// <response code="404">Not Found</response>
         [ProducesResponseType(StatusCodes.Status200OK)]

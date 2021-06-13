@@ -54,13 +54,14 @@ namespace Riglog.Api.Controllers
         /// <summary>
         /// Create admin user
         /// </summary>
+        /// <param name="adminPassword">Password</param>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPost("seed/admin")]
-        public IActionResult CreateSuperAdmin()
+        public IActionResult CreateSuperAdmin([FromBody] string adminPassword)
         {
             try
             {
-                _seedService.SeedAdminUser();
+                _seedService.SeedAdminUser(adminPassword);
                 return Ok();
             }
             catch (Exception)
