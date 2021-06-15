@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 using Riglog.Api.Data.Sql.Entities;
 
 namespace Riglog.Api.Data.Sql
@@ -24,34 +25,8 @@ namespace Riglog.Api.Data.Sql
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // User
-            modelBuilder.Entity<User>().HasIndex(k => new { k.Username }).IsUnique();
-            modelBuilder.Entity<User>().HasIndex(k => new { k.Email }).IsUnique();
-            modelBuilder.Entity<User>().HasIndex(k => new { k.Phone }).IsUnique();
-            modelBuilder.Entity<User>().HasIndex(i => i.IsSuperAdmin);
-            modelBuilder.Entity<User>().HasIndex(i => i.IsDeleted);
-            
-            // OsType
-            modelBuilder.Entity<OsType>().HasIndex(i => i.Name).IsUnique();
-            modelBuilder.Entity<OsType>().HasIndex(i => i.IsDeleted);
-
-            // OsEdition
-            modelBuilder.Entity<OsEdition>().HasIndex(i => i.IsDeleted);
-
-            // OsVersion
-            modelBuilder.Entity<OsVersion>().HasIndex(i => i.IsDeleted);
-
-            // Computer
-            modelBuilder.Entity<Computer>().HasIndex(i => i.Name).IsUnique();
-            modelBuilder.Entity<Computer>().HasIndex(i => i.IsDeleted);
-
-            // ComputerType
-            modelBuilder.Entity<ComputerType>().HasIndex(i => i.Name).IsUnique();
-            modelBuilder.Entity<ComputerType>().HasIndex(i => i.IsDeleted);
-
-            // ComputerUser
-            modelBuilder.Entity<ComputerUser>().HasIndex(i => i.IsAdmin);
-            modelBuilder.Entity<ComputerUser>().HasIndex(i => i.IsDeleted);
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }
