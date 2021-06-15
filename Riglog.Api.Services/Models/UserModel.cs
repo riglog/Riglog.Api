@@ -5,11 +5,11 @@ namespace Riglog.Api.Services.Models
 {
     public class UserModel
     {
-        private string _username;
-        private string _email;
-        private string _phone;
-        private string _firstName;
-        private string _lastName;
+        private string _username = default!;
+        private string _email = default!;
+        private string? _phone;
+        private string _firstName = default!;
+        private string _lastName = default!;
 
         [Required]
         public Guid Id { get; set; }
@@ -18,21 +18,21 @@ namespace Riglog.Api.Services.Models
         public string Username
         {
             get => _username;
-            set => _username = value?.Trim().ToLower();
+            set => _username = value.Trim().ToLower();
         }
 
         [Required]
         public string FirstName
         {
             get => _firstName;
-            set => _firstName = value?.Trim();
+            set => _firstName = value.Trim();
         }
 
         [Required]
         public string LastName
         {
             get => _lastName;
-            set => _lastName = value?.Trim();
+            set => _lastName = value.Trim();
         }
 
         [Required]
@@ -40,10 +40,10 @@ namespace Riglog.Api.Services.Models
         public string Email
         {
             get => _email;
-            set => _email = value?.Trim().ToLower();
+            set => _email = value.Trim().ToLower();
         }
 
-        public string Phone
+        public string? Phone
         {
             get => _phone;
             set => _phone = value?.Trim().Replace(" ", "");

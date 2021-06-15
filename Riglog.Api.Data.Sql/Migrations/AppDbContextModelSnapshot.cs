@@ -25,10 +25,11 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ComputerTypeId")
+                    b.Property<Guid>("ComputerTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -38,18 +39,20 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid?>("OsEditionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("OsTypeId")
+                    b.Property<Guid>("OsTypeId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("OsVersionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UpdatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
@@ -62,8 +65,7 @@ namespace Riglog.Api.Data.Sql.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("OsEditionId");
 
@@ -81,6 +83,7 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -90,9 +93,11 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UpdatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
@@ -103,8 +108,7 @@ namespace Riglog.Api.Data.Sql.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("ComputerTypes");
                 });
@@ -115,10 +119,11 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("ComputerId")
+                    b.Property<Guid>("ComputerId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -131,6 +136,7 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("UpdatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
@@ -159,6 +165,7 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -168,12 +175,14 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("OsVersionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UpdatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
@@ -195,6 +204,7 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -204,12 +214,14 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid?>("OsEditionId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("UpdatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
@@ -220,8 +232,7 @@ namespace Riglog.Api.Data.Sql.Migrations
                     b.HasIndex("IsDeleted");
 
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasFilter("[Name] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("OsEditionId");
 
@@ -235,6 +246,7 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
@@ -244,9 +256,11 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UpdatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
@@ -266,15 +280,18 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FirstName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
@@ -284,6 +301,7 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("LastName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
@@ -293,19 +311,20 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("UpdatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Username")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique()
-                        .HasFilter("[Email] IS NOT NULL");
+                        .IsUnique();
 
                     b.HasIndex("IsDeleted");
 
@@ -316,8 +335,7 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .HasFilter("[Phone] IS NOT NULL");
 
                     b.HasIndex("Username")
-                        .IsUnique()
-                        .HasFilter("[Username] IS NOT NULL");
+                        .IsUnique();
 
                     b.ToTable("Users");
                 });
@@ -326,7 +344,9 @@ namespace Riglog.Api.Data.Sql.Migrations
                 {
                     b.HasOne("Riglog.Api.Data.Sql.Entities.ComputerType", "ComputerType")
                         .WithMany("Computers")
-                        .HasForeignKey("ComputerTypeId");
+                        .HasForeignKey("ComputerTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Riglog.Api.Data.Sql.Entities.OsEdition", "OsEdition")
                         .WithMany("Computers")
@@ -334,7 +354,9 @@ namespace Riglog.Api.Data.Sql.Migrations
 
                     b.HasOne("Riglog.Api.Data.Sql.Entities.OsType", "OsType")
                         .WithMany("Computers")
-                        .HasForeignKey("OsTypeId");
+                        .HasForeignKey("OsTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Riglog.Api.Data.Sql.Entities.OsVersion", "OsVersion")
                         .WithMany("Computers")
@@ -353,7 +375,9 @@ namespace Riglog.Api.Data.Sql.Migrations
                 {
                     b.HasOne("Riglog.Api.Data.Sql.Entities.Computer", "Computer")
                         .WithMany("ComputerUsers")
-                        .HasForeignKey("ComputerId");
+                        .HasForeignKey("ComputerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Riglog.Api.Data.Sql.Entities.User", "User")
                         .WithMany()

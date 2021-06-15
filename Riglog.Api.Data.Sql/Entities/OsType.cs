@@ -4,11 +4,11 @@ namespace Riglog.Api.Data.Sql.Entities
 {
     public class OsType : BaseEntity
     {
-        public string Name { get; set; }
+        public string Name { get; set; } = default!;
 
-        public ICollection<Computer> Computers { get; set; }
+        public ICollection<Computer>? Computers { get; set; }
 
-        public OsEdition OsEdition { get; set; }
+        public OsEdition? OsEdition { get; set; }
 
     }
 }
