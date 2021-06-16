@@ -1,7 +1,8 @@
 version: '3'
 services:
   db:
-    image: mcr.microsoft.com/azure-sql-edge:latest
+    image: mcr.microsoft.com/mssql/server:2019-latest
+    #image: mcr.microsoft.com/azure-sql-edge:latest  # For Apple M1 silicon
     container_name: riglog_db
     restart: always
     environment:
@@ -10,5 +11,5 @@ services:
       MSSQL_PID: Developer
     ports:
       - '1433:1433'
-#    volumes:
-#      - ./mssql:/var/opt/mssql/data
+    volumes:
+      - ./mssql:/var/opt/mssql/data
