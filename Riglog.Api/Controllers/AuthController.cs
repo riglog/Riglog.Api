@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Riglog.Api.Services.Interfaces;
@@ -26,11 +27,11 @@ namespace Riglog.Api.Controllers
         /// <returns>Token</returns>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
         [HttpPost("login")]
-        public IActionResult Login(string username, string password)
+        public async Task<IActionResult> Login(string username, string password)
         {
             try
             {
-                return Ok(_authService.Login(username, password));
+                return Ok(await _authService.Login(username, password));
             }
             catch (Exception)
             {

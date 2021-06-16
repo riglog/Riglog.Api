@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Riglog.Api.Data.Sql.Interfaces;
 
@@ -16,29 +18,29 @@ namespace Riglog.Api.Data.Sql.Repositories
             _entities = _dbContext.Set<TEntity>();
         }
         
-        public IQueryable<TEntity> GetAll()
+        public async Task<List<TEntity>> GetAll()
         {
-            return _entities.Where(s => s.IsDeleted == false);
+            return await _entities.Where(s => s.IsDeleted == false).ToListAsync();
         }
 
-        public TEntity GetById(Guid id)
+        public async Task<TEntity> GetById(Guid id)
         {
-            return _entities.Single(s => s.Id == id);
+            return await _entities.SingleAsync(s => s.Id == id);
         }
 
-        public void Create(TEntity entity)
+        public async Task Create(TEntity entity)
         {
-            _entities.Add(entity);
-            _dbContext.SaveChanges();
+            await _entities.AddAsync(entity);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public void Update(TEntity entity)
+        public async Task Update(TEntity entity)
         {
             _entities.Update(entity);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
 
-        public void Delete(Guid id)
+        public async Task Delete(Guid id)
         {
             var entity = _entities.Single(s => s.Id == id);
             
@@ -46,7 +48,7 @@ namespace Riglog.Api.Data.Sql.Repositories
             
             entity.IsDeleted = true;
             _entities.Update(entity);
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

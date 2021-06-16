@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Riglog.Api.Data.Sql.Entities;
@@ -20,45 +21,45 @@ namespace Riglog.Api.Services
             _mapper = mapper;
         }
         
-        public List<UserModel> GetAll()
+        public async Task<List<UserModel>> GetAll()
         {
-            var users = _userRepository.GetAll();
+            var users = await _userRepository.GetAll();
             return _mapper.Map<List<UserModel>>(users);
         }
 
-        public UserModel GetById(Guid userId)
+        public async Task<UserModel> GetById(Guid userId)
         {
-            var user = _userRepository.GetById(userId);
+            var user = await _userRepository.GetById(userId);
             return _mapper.Map<UserModel>(user);
         }
 
-        public Guid Create(UserModel userModel)
+        public async Task<Guid> Create(UserModel userModel)
         {
             var user = _mapper.Map<User>(userModel);
             user.Id = new Guid();
-            _userRepository.Create(user);
+            await _userRepository.Create(user);
             return user.Id;
         }
 
-        public Guid Update(UserModel userModel)
+        public async Task<Guid> Update(UserModel userModel)
         {
-            var currentUser = _userRepository.GetById(userModel.Id);
+            var currentUser = await _userRepository.GetById(userModel.Id);
             var user = _mapper.Map(userModel, currentUser);
             user.UpdatedDate = DateTime.Now;
-            _userRepository.Update(user);
+            await _userRepository.Update(user);
             return user.Id;
         }
 
-        public void Delete(Guid userId) => _userRepository.Delete(userId);
+        public async Task Delete(Guid userId) => await _userRepository.Delete(userId);
         
-        public void SetPassword(Guid userId, string password)
+        public async Task SetPassword(Guid userId, string password)
         {
-            var user = _userRepository.GetById(userId);
+            var user = await _userRepository.GetById(userId);
             
             var hasher = new PasswordHasher<User>();
             user.Password = hasher.HashPassword(user, password);
                 
-            _userRepository.Update(user);
+            await _userRepository.Update(user);
         }
     }
 }

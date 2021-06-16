@@ -57,11 +57,11 @@ namespace Riglog.Api.Controllers
         /// <param name="adminPassword">Password</param>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPost("seed/admin")]
-        public IActionResult CreateSuperAdmin([FromBody] string adminPassword)
+        public async Task<IActionResult> CreateSuperAdmin([FromBody] string adminPassword)
         {
             try
             {
-                _seedService.SeedAdminUser(adminPassword);
+                await _seedService.SeedAdminUser(adminPassword);
                 return Ok();
             }
             catch (Exception)

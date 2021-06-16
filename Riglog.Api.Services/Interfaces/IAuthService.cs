@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace Riglog.Api.Services.Interfaces
 {
     public interface IAuthService
     {
-        public string Login(string username, string password);
+        public Task<string> Login(string username, string password);
     }
 }

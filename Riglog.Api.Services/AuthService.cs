@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -23,10 +24,10 @@ namespace Riglog.Api.Services
             _configuration = configuration;
         }
         
-        public string Login(string username, string password)
+        public async Task<string> Login(string username, string password)
         {
             var hasher = new PasswordHasher<User>();
-            var user = _userRepository.GetByUsername(username);
+            var user = await _userRepository.GetByUsername(username);
                 
             if (hasher.VerifyHashedPassword(user, user.Password, password) == 0)
             {
@@ -40,7 +41,7 @@ namespace Riglog.Api.Services
             {
                 new(ClaimTypes.PrimarySid, user.Id.ToString()),
                 new(ClaimTypes.NameIdentifier, user.Username),
-                new(ClaimTypes.Role, (user.IsSuperAdmin ? "Admin" : "User")),
+                new(ClaimTypes.Role, user.IsSuperAdmin ? "Admin" : "User")
             };
 
             var tokenOptions = new JwtSecurityToken(

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,9 +29,9 @@ namespace Riglog.Api.Controllers
         /// <response code="200">Success</response>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(List<UserModel>))]
         [HttpGet("all")]
-        public IActionResult All()
+        public async Task<IActionResult> All()
         {
-            return Ok(_userService.GetAll());
+            return Ok(await _userService.GetAll());
         }
         
         /// <summary>
@@ -41,11 +42,11 @@ namespace Riglog.Api.Controllers
         /// <response code="404">Not Found</response>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserModel))]
         [HttpGet("{userId:guid}")]
-        public IActionResult Get(Guid userId)
+        public async Task<IActionResult> Get(Guid userId)
         {
             try
             {
-                return Ok(_userService.GetById(userId));
+                return Ok(await _userService.GetById(userId));
             }
             catch (Exception)
             {
@@ -61,11 +62,11 @@ namespace Riglog.Api.Controllers
         /// <response code="409">User already exists</response>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Guid))]
         [HttpPost]
-        public IActionResult Create([FromBody] UserModel userModel)
+        public async Task<IActionResult> Create([FromBody] UserModel userModel)
         {
             try
             {
-                return Ok(_userService.Create(userModel));
+                return Ok(await _userService.Create(userModel));
             }
             catch (Exception)
             {
@@ -80,11 +81,11 @@ namespace Riglog.Api.Controllers
         /// <response code="400">Missing required fields</response>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(Guid))]
         [HttpPut]
-        public IActionResult Update([FromBody] UserModel userModel)
+        public async Task<IActionResult> Update([FromBody] UserModel userModel)
         {
             try
             {
-                return Ok(_userService.Update(userModel));
+                return Ok(await _userService.Update(userModel));
             }
             catch (Exception)
             {
@@ -99,11 +100,11 @@ namespace Riglog.Api.Controllers
         /// <response code="200">Success</response>
         /// <response code="404">Not Found</response> 
         [HttpDelete, Route("{userId:guid}")]
-        public IActionResult Delete(Guid userId)
+        public async Task<IActionResult> Delete(Guid userId)
         {
             try
             {
-                _userService.Delete(userId);
+                await _userService.Delete(userId);
                 return Ok();
             }
             catch (Exception)
@@ -121,11 +122,11 @@ namespace Riglog.Api.Controllers
         /// <response code="404">Not Found</response>
         [ProducesResponseType(StatusCodes.Status200OK)]
         [HttpPatch("{userId:guid}/set-password")]
-        public IActionResult SetPassword(Guid userId, [FromBody] string password)
+        public async Task<IActionResult> SetPassword(Guid userId, [FromBody] string password)
         {
             try
             {
-                _userService.SetPassword(userId, password);
+                await _userService.SetPassword(userId, password);
                 return Ok();
             }
             catch (Exception)

@@ -1,21 +1,22 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Riglog.Api.Services.Models;
 
 namespace Riglog.Api.Services.Interfaces
 {
     public interface IUserService
     {
-        public List<UserModel> GetAll();
+        public Task<List<UserModel>> GetAll();
 
-        public UserModel GetById(Guid userId);
+        public Task<UserModel> GetById(Guid userId);
 
-        public Guid Create(UserModel userModel);
+        public Task<Guid> Create(UserModel userModel);
         
-        public Guid Update(UserModel userModel);
+        public Task<Guid> Update(UserModel userModel);
         
-        public void Delete(Guid userId);
+        public Task Delete(Guid userId);
 
-        public void SetPassword(Guid userId, string password);
+        public Task SetPassword(Guid userId, string password);
     }
 }

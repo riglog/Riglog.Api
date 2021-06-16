@@ -1,18 +1,19 @@
 using System;
-using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Riglog.Api.Data.Sql.Interfaces
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {
-        IQueryable<TEntity> GetAll();
+        public Task<List<TEntity>> GetAll();
 
-        TEntity GetById(Guid id);
+        public Task<TEntity> GetById(Guid id);
 
-        void Create(TEntity entity);
+        public Task Create(TEntity entity);
 
-        void Update(TEntity entity);
+        public Task Update(TEntity entity);
 
-        void Delete(Guid id);
+        public Task Delete(Guid id);
     }
 }

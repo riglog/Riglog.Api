@@ -1,4 +1,4 @@
-using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Riglog.Api.Data.Sql.Entities;
 using Riglog.Api.Data.Sql.Interfaces;
@@ -15,7 +15,7 @@ namespace Riglog.Api.Services
             _userRepository = userRepository;
         }
         
-        public void SeedAdminUser(string adminPassword)
+        public async Task SeedAdminUser(string adminPassword)
         {
             const string adminUser = "riglogadmin";
 
@@ -29,12 +29,12 @@ namespace Riglog.Api.Services
                 UpdatedBy = adminUser,
                 IsSuperAdmin = true
             };
-            _userRepository.Create(admin);
+            await _userRepository.Create(admin);
             
             var hasher = new PasswordHasher<User>();
             admin.Password = hasher.HashPassword(admin, adminPassword);
             
-            _userRepository.Update(admin);
+            await _userRepository.Update(admin);
         }
     }
 }
