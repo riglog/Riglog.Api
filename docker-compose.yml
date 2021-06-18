@@ -9,7 +9,18 @@ services:
       ACCEPT_EULA: Y
       MSSQL_SA_PASSWORD: Riglog12345@
       MSSQL_PID: Developer
+    #ports:
+    #  - '1433:1433'
+    #volumes:
+    #  - ./mssql:/var/opt/mssql/data
+  api:
+    image: riglog/riglog-api:latest
+    container_name: riglog_api
+    restart: always
+    environment:
+      ConnectionStrings__SqlDatabase: Server=tcp:db,1433;Initial Catalog=riglog;Persist Security Info=False;User ID=SA;Password=Riglog12345@;MultipleActiveResultSets=False;Encrypt=False;TrustServerCertificate=False;Connection Timeout=30;MultipleActiveResultSets=true
+      AuthSettings__SecretKey: RiglogSecretKey-ChangeIt!
+      AuthSettings__Audience: https://my.riglog.host
     ports:
-      - '1433:1433'
-    volumes:
-      - ./mssql:/var/opt/mssql/data
+      - '8080:80'
+      
