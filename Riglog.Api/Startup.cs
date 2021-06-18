@@ -37,7 +37,7 @@ namespace Riglog.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
-                Configuration.GetConnectionString("RiglogDatabase"),
+                Configuration.GetConnectionString("SqlDatabase"),
                 opts => opts.CommandTimeout((int)TimeSpan.FromSeconds(20).TotalSeconds)
                     .MigrationsAssembly("Riglog.Api.Data.Sql")));
             
