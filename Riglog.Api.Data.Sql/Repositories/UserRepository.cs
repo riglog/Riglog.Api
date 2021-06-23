@@ -13,7 +13,7 @@ namespace Riglog.Api.Data.Sql.Repositories
             _dbContext = dbContext;
         }
         
-        public async Task<User> GetByUsername(string username)
+        public async Task<User> GetByUsernameAsync(string username)
         {
             return await _dbContext.Users.SingleAsync(q => q.Username == username);
         }

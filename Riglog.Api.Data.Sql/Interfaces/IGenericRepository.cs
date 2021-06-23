@@ -6,14 +6,14 @@ namespace Riglog.Api.Data.Sql.Interfaces
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {
-        public Task<List<TEntity>> GetAll();
+        public Task<List<TEntity>> GetAllAsync();
 
-        public Task<TEntity> GetById(Guid id);
+        public Task<TEntity> GetByIdAsync(Guid id);
 
-        public Task Create(TEntity entity);
+        public Task CreateAsync(TEntity entity);
 
-        public Task Update(TEntity entity);
+        public Task UpdateAsync(TEntity entity);
 
-        public Task Delete(Guid id);
+        public Task DeleteAsync(Guid id);
     }
 }

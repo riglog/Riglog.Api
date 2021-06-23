@@ -15,7 +15,7 @@ namespace Riglog.Api.Services
             _userRepository = userRepository;
         }
         
-        public async Task SeedAdminUser(string adminPassword)
+        public async Task SeedAdminUserAsync(string adminPassword)
         {
             const string adminUser = "riglogadmin";
 
@@ -29,12 +29,12 @@ namespace Riglog.Api.Services
                 UpdatedBy = adminUser,
                 IsSuperAdmin = true
             };
-            await _userRepository.Create(admin);
+            await _userRepository.CreateAsync(admin);
             
             var hasher = new PasswordHasher<User>();
             admin.Password = hasher.HashPassword(admin, adminPassword);
             
-            await _userRepository.Update(admin);
+            await _userRepository.UpdateAsync(admin);
         }
     }
 }

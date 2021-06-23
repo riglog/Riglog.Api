@@ -24,10 +24,10 @@ namespace Riglog.Api.Services
             _configuration = configuration;
         }
         
-        public async Task<string> Login(string username, string password)
+        public async Task<string> LoginAsync(string username, string password)
         {
             var hasher = new PasswordHasher<User>();
-            var user = await _userRepository.GetByUsername(username);
+            var user = await _userRepository.GetByUsernameAsync(username);
                 
             if (hasher.VerifyHashedPassword(user, user.Password, password) == 0)
             {

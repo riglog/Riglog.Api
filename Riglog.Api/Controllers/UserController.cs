@@ -31,7 +31,7 @@ namespace Riglog.Api.Controllers
         [HttpGet("all")]
         public async Task<IActionResult> All()
         {
-            return Ok(await _userService.GetAll());
+            return Ok(await _userService.GetAllAsync());
         }
         
         /// <summary>
@@ -46,7 +46,7 @@ namespace Riglog.Api.Controllers
         {
             try
             {
-                return Ok(await _userService.GetById(userId));
+                return Ok(await _userService.GetByIdAsync(userId));
             }
             catch (Exception)
             {
@@ -66,7 +66,7 @@ namespace Riglog.Api.Controllers
         {
             try
             {
-                return Ok(await _userService.Create(userModel));
+                return Ok(await _userService.CreateAsync(userModel));
             }
             catch (Exception)
             {
@@ -85,7 +85,7 @@ namespace Riglog.Api.Controllers
         {
             try
             {
-                return Ok(await _userService.Update(userModel));
+                return Ok(await _userService.UpdateAsync(userModel));
             }
             catch (Exception)
             {
@@ -104,7 +104,7 @@ namespace Riglog.Api.Controllers
         {
             try
             {
-                await _userService.Delete(userId);
+                await _userService.DeleteAsync(userId);
                 return Ok();
             }
             catch (Exception)
@@ -126,7 +126,7 @@ namespace Riglog.Api.Controllers
         {
             try
             {
-                await _userService.SetPassword(userId, password);
+                await _userService.SetPasswordAsync(userId, password);
                 return Ok();
             }
             catch (Exception)

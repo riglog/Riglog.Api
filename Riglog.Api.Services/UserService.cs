@@ -21,45 +21,45 @@ namespace Riglog.Api.Services
             _mapper = mapper;
         }
         
-        public async Task<List<UserModel>> GetAll()
+        public async Task<List<UserModel>> GetAllAsync()
         {
-            var users = await _userRepository.GetAll();
+            var users = await _userRepository.GetAllAsync();
             return _mapper.Map<List<UserModel>>(users);
         }
 
-        public async Task<UserModel> GetById(Guid userId)
+        public async Task<UserModel> GetByIdAsync(Guid userId)
         {
-            var user = await _userRepository.GetById(userId);
+            var user = await _userRepository.GetByIdAsync(userId);
             return _mapper.Map<UserModel>(user);
         }
 
-        public async Task<Guid> Create(UserModel userModel)
+        public async Task<Guid> CreateAsync(UserModel userModel)
         {
             var user = _mapper.Map<User>(userModel);
             user.Id = new Guid();
-            await _userRepository.Create(user);
+            await _userRepository.CreateAsync(user);
             return user.Id;
         }
 
-        public async Task<Guid> Update(UserModel userModel)
+        public async Task<Guid> UpdateAsync(UserModel userModel)
         {
-            var currentUser = await _userRepository.GetById(userModel.Id);
+            var currentUser = await _userRepository.GetByIdAsync(userModel.Id);
             var user = _mapper.Map(userModel, currentUser);
             user.UpdatedDate = DateTime.Now;
-            await _userRepository.Update(user);
+            await _userRepository.UpdateAsync(user);
             return user.Id;
         }
 
-        public async Task Delete(Guid userId) => await _userRepository.Delete(userId);
+        public async Task DeleteAsync(Guid userId) => await _userRepository.DeleteAsync(userId);
         
-        public async Task SetPassword(Guid userId, string password)
+        public async Task SetPasswordAsync(Guid userId, string password)
         {
-            var user = await _userRepository.GetById(userId);
+            var user = await _userRepository.GetByIdAsync(userId);
             
             var hasher = new PasswordHasher<User>();
             user.Password = hasher.HashPassword(user, password);
                 
-            await _userRepository.Update(user);
+            await _userRepository.UpdateAsync(user);
         }
     }
 }

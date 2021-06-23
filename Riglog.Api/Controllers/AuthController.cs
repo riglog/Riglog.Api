@@ -31,7 +31,7 @@ namespace Riglog.Api.Controllers
         {
             try
             {
-                return Ok(await _authService.Login(username, password));
+                return Ok(await _authService.LoginAsync(username, password));
             }
             catch (Exception)
             {

@@ -61,7 +61,7 @@ namespace Riglog.Api.Controllers
         {
             try
             {
-                await _seedService.SeedAdminUser(adminPassword);
+                await _seedService.SeedAdminUserAsync(adminPassword);
                 return Ok();
             }
             catch (Exception)

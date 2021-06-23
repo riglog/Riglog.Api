@@ -18,29 +18,29 @@ namespace Riglog.Api.Data.Sql.Repositories
             _entities = _dbContext.Set<TEntity>();
         }
         
-        public async Task<List<TEntity>> GetAll()
+        public async Task<List<TEntity>> GetAllAsync()
         {
             return await _entities.Where(s => s.IsDeleted == false).ToListAsync();
         }
 
-        public async Task<TEntity> GetById(Guid id)
+        public async Task<TEntity> GetByIdAsync(Guid id)
         {
             return await _entities.SingleAsync(s => s.Id == id);
         }
 
-        public async Task Create(TEntity entity)
+        public async Task CreateAsync(TEntity entity)
         {
             await _entities.AddAsync(entity);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task Update(TEntity entity)
+        public async Task UpdateAsync(TEntity entity)
         {
             _entities.Update(entity);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task Delete(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var entity = _entities.Single(s => s.Id == id);
             
