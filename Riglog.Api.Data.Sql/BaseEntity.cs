@@ -9,10 +9,10 @@ namespace Riglog.Api.Data.Sql
 
         public DateTime CreatedDate { get; set; } = DateTime.Now;
 
-        public string CreatedBy { get; set; } = default!;
+        public Guid CreatedBy { get; set; }
 
         public DateTime UpdatedDate { get; set; } = DateTime.Now;
 
-        public string UpdatedBy { get; set; } = default!;
+        public Guid UpdatedBy { get; set; }
     }
 }

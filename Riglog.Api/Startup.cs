@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Mvc.Versioning;
@@ -58,6 +59,8 @@ namespace Riglog.Api
             services.AddSwaggerGen();
             
             services.AddAutoMapper(typeof(MappingProfile));
+            
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             
             services.AddScoped<IUserRepository, UserRepository>();
             
