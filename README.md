@@ -2,7 +2,7 @@
 
 ## Demo API
 
-[https://riglog.azurewebsites.net/api/swagger/index.html](https://riglog.azurewebsites.net/api/swagger/index.html)
+[https://riglogapi.azurewebsites.net/api/swagger/index.html](https://riglogapi.azurewebsites.net/api/swagger/index.html)
 
 ## Docker Hub
 
