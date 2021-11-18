@@ -2,14 +2,13 @@ using AutoMapper;
 using Riglog.Api.Data.Sql.Entities;
 using Riglog.Api.Services.Models;
 
-namespace Riglog.Api.Services.Mappings
+namespace Riglog.Api.Services.Mappings;
+
+public class MappingProfile : Profile
 {
-    public class MappingProfile : Profile
+    public MappingProfile()
     {
-        public MappingProfile()
-        {
-            CreateMap<UserModel, User>();
-            CreateMap<User, UserModel>();
-        }
+        CreateMap<UserModel, User>();
+        CreateMap<User, UserModel>();
     }
 }

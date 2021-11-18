@@ -5,40 +5,39 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Riglog.Api.Filters
+namespace Riglog.Api.Filters;
+
+public class AuthorizationOperationFilter : IOperationFilter
 {
-    public class AuthorizationOperationFilter : IOperationFilter
+    public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
-        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        var hasAuthorize = context.MethodInfo.DeclaringType != null && context.MethodInfo.DeclaringType.GetCustomAttributes(true)
+            .Union(context.MethodInfo.GetCustomAttributes(true))
+            .OfType<AuthorizeAttribute>().Any();
+
+        if (!hasAuthorize) return;
+
+        if (!operation.Responses.ContainsKey("401"))
         {
-            var hasAuthorize = context.MethodInfo.DeclaringType != null && context.MethodInfo.DeclaringType.GetCustomAttributes(true)
-                .Union(context.MethodInfo.GetCustomAttributes(true))
-                .OfType<AuthorizeAttribute>().Any();
-
-            if (!hasAuthorize) return;
-
-            if (!operation.Responses.ContainsKey("401"))
-            {
-                operation.Responses.Add("401", new OpenApiResponse { Description = "Unauthorized" });
-            } 
+            operation.Responses.Add("401", new OpenApiResponse { Description = "Unauthorized" });
+        } 
             
-            operation.Security = new List<OpenApiSecurityRequirement>
+        operation.Security = new List<OpenApiSecurityRequirement>
+        {
+            new()
             {
-                new()
                 {
+                    new OpenApiSecurityScheme
                     {
-                        new OpenApiSecurityScheme
+                        Reference = new OpenApiReference
                         {
-                            Reference = new OpenApiReference
-                            {
-                                Id = "Bearer",
-                                Type = ReferenceType.SecurityScheme
-                            }
-                        },
-                        Array.Empty<string>()
-                    }
+                            Id = "Bearer",
+                            Type = ReferenceType.SecurityScheme
+                        }
+                    },
+                    Array.Empty<string>()
                 }
-            };
-        }
+            }
+        };
     }
 }

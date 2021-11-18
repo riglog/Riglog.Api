@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Riglog.Api.Services.Interfaces
-{
-    public interface IDbService
-    {
-        public Task<IEnumerable<string>>GetMigrationsAsync();
+namespace Riglog.Api.Services.Interfaces;
 
-        public Task MigrateAsync();
-    }
+public interface IDbService
+{
+    public Task<IEnumerable<string>>GetMigrationsAsync();
+
+    public Task MigrateAsync();
 }

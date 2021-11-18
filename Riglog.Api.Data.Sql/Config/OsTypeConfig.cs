@@ -2,14 +2,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Riglog.Api.Data.Sql.Entities;
 
-namespace Riglog.Api.Data.Sql.Config
+namespace Riglog.Api.Data.Sql.Config;
+
+public class OsTypeConfig : IEntityTypeConfiguration<OsType>
 {
-    public class OsTypeConfig : IEntityTypeConfiguration<OsType>
+    public void Configure(EntityTypeBuilder<OsType> builder)
     {
-        public void Configure(EntityTypeBuilder<OsType> builder)
-        {
-            builder.HasIndex(i => i.Name).IsUnique();
-            builder.HasIndex(i => i.IsDeleted);
-        }
+        builder.HasIndex(i => i.Name).IsUnique();
+        builder.HasIndex(i => i.IsDeleted);
     }
 }

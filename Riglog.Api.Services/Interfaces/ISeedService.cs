@@ -1,9 +1,8 @@
 using System.Threading.Tasks;
 
-namespace Riglog.Api.Services.Interfaces
+namespace Riglog.Api.Services.Interfaces;
+
+public interface ISeedService
 {
-    public interface ISeedService
-    {
-        public Task SeedAdminUserAsync(string adminPassword);
-    }
+    public Task SeedAdminUserAsync(string adminPassword);
 }

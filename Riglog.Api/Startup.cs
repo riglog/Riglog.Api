@@ -23,86 +23,85 @@ using Riglog.Api.Services.Interfaces;
 using Riglog.Api.Services.Mappings;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
-namespace Riglog.Api
+namespace Riglog.Api;
+
+public class Startup
 {
-    public class Startup
+    private const string SwaggerBasePath = "api";
+    private IConfiguration Configuration { get; }
+
+    public Startup(IConfiguration configuration)
     {
-        private const string SwaggerBasePath = "api";
-        public IConfiguration Configuration { get; }
+        Configuration = configuration;
+    }
 
-        public Startup(IConfiguration configuration)
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
+            Configuration.GetConnectionString("SqlDatabase"),
+            opts => opts.CommandTimeout((int)TimeSpan.FromSeconds(20).TotalSeconds)
+                .MigrationsAssembly("Riglog.Api.Data.Sql")));
+            
+        services.AddVersionedApiExplorer(o => o.GroupNameFormat = "'v'VVV");
+            
+        services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+            
+        services.AddSingleton<IConfigureOptions<ApiVersioningOptions>, ConfigureApiVersioningOptions>();
+        services.AddApiVersioning();
+            
+        services.AddSingleton<IConfigureOptions<AuthenticationOptions>, ConfigureAuthenticationOptions>();
+        services.AddAuthentication().AddJwtBearer();
+        services.ConfigureOptions<ConfigureJwtBearerOptions>();
+
+        services.AddControllers();
+            
+        services.AddSingleton<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerGenOptions>();
+        services.AddSwaggerGen();
+            
+        services.AddAutoMapper(typeof(MappingProfile));
+            
+        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            
+        services.AddScoped<IUserRepository, UserRepository>();
+            
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IDbService, DbService>();
+        services.AddScoped<ISeedService, SeedService>();
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
+    {
+        if (env.IsDevelopment())
         {
-            Configuration = configuration;
+            app.UseDeveloperExceptionPage();
         }
-
-        public void ConfigureServices(IServiceCollection services)
+            
+        app.UseSwagger(c =>
         {
-            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
-                Configuration.GetConnectionString("SqlDatabase"),
-                opts => opts.CommandTimeout((int)TimeSpan.FromSeconds(20).TotalSeconds)
-                    .MigrationsAssembly("Riglog.Api.Data.Sql")));
-            
-            services.AddVersionedApiExplorer(o => o.GroupNameFormat = "'v'VVV");
-            
-            services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-            
-            services.AddSingleton<IConfigureOptions<ApiVersioningOptions>, ConfigureApiVersioningOptions>();
-            services.AddApiVersioning();
-            
-            services.AddSingleton<IConfigureOptions<AuthenticationOptions>, ConfigureAuthenticationOptions>();
-            services.AddAuthentication().AddJwtBearer();
-            services.ConfigureOptions<ConfigureJwtBearerOptions>();
-
-            services.AddControllers();
-            
-            services.AddSingleton<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerGenOptions>();
-            services.AddSwaggerGen();
-            
-            services.AddAutoMapper(typeof(MappingProfile));
-            
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            
-            services.AddScoped<IUserRepository, UserRepository>();
-            
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IDbService, DbService>();
-            services.AddScoped<ISeedService, SeedService>();
-        }
-
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider apiVersionDescriptionProvider)
-        {
-            if (env.IsDevelopment())
+            c.RouteTemplate = SwaggerBasePath + "/{documentName}/swagger/swagger.json";
+            c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
             {
-                app.UseDeveloperExceptionPage();
-            }
-            
-            app.UseSwagger(c =>
-            {
-                c.RouteTemplate = SwaggerBasePath + "/{documentName}/swagger/swagger.json";
-                c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
-                {
-                    swaggerDoc.Servers = new List<OpenApiServer> { new() { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" } };
-                });
+                swaggerDoc.Servers = new List<OpenApiServer> { new() { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" } };
             });
-            app.UseSwaggerUI(
-                c =>
+        });
+        app.UseSwaggerUI(
+            c =>
+            {
+                foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions.OrderByDescending(x => x.ApiVersion))
                 {
-                    foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions.OrderByDescending(x => x.ApiVersion))
-                    {
-                        c.SwaggerEndpoint($"/{SwaggerBasePath}/{description.GroupName}/swagger/swagger.json", "Riglog API " + description.GroupName.ToUpperInvariant());
-                        c.RoutePrefix = $"{SwaggerBasePath}/swagger";
-                    }
-                });
+                    c.SwaggerEndpoint($"/{SwaggerBasePath}/{description.GroupName}/swagger/swagger.json", "Riglog API " + description.GroupName.ToUpperInvariant());
+                    c.RoutePrefix = $"{SwaggerBasePath}/swagger";
+                }
+            });
 
-            app.UseHttpsRedirection();
+        app.UseHttpsRedirection();
 
-            app.UseRouting();
+        app.UseRouting();
 
-            app.UseAuthentication();
-            app.UseAuthorization();
+        app.UseAuthentication();
+        app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-        }
+        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
     }
 }

@@ -2,18 +2,17 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Riglog.Api.Data.Sql.Interfaces
+namespace Riglog.Api.Data.Sql.Interfaces;
+
+public interface IGenericRepository<TEntity> where TEntity : class
 {
-    public interface IGenericRepository<TEntity> where TEntity : class
-    {
-        public Task<List<TEntity>> GetAllAsync();
+    public Task<List<TEntity>> GetAllAsync();
 
-        public Task<TEntity> GetByIdAsync(Guid id);
+    public Task<TEntity> GetByIdAsync(Guid id);
 
-        public Task CreateAsync(TEntity entity);
+    public Task CreateAsync(TEntity entity);
 
-        public Task UpdateAsync(TEntity entity);
+    public Task UpdateAsync(TEntity entity);
 
-        public Task DeleteAsync(Guid id);
-    }
+    public Task DeleteAsync(Guid id);
 }

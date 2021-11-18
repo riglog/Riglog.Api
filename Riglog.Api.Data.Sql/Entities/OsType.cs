@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 
-namespace Riglog.Api.Data.Sql.Entities
+namespace Riglog.Api.Data.Sql.Entities;
+
+public class OsType : BaseEntity
 {
-    public class OsType : BaseEntity
-    {
-        public string Name { get; set; } = default!;
+    public string Name { get; set; } = default!;
 
-        public ICollection<Computer>? Computers { get; set; }
+    public ICollection<Computer>? Computers { get; set; }
 
-        public OsEdition? OsEdition { get; set; }
+    public OsEdition? OsEdition { get; set; }
 
-    }
 }
