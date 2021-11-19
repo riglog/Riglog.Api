@@ -47,6 +47,7 @@ public class DbController : ControllerBase
     public async Task<IActionResult> Migrate()
     {
         await _dbService.MigrateAsync();
+        
         return Ok();
     }
         

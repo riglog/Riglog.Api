@@ -41,29 +41,29 @@ public class Startup
             Configuration.GetConnectionString("SqlDatabase"),
             opts => opts.CommandTimeout((int)TimeSpan.FromSeconds(20).TotalSeconds)
                 .MigrationsAssembly("Riglog.Api.Data.Sql")));
-            
+
         services.AddVersionedApiExplorer(o => o.GroupNameFormat = "'v'VVV");
-            
+
         services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
-            
+
         services.AddSingleton<IConfigureOptions<ApiVersioningOptions>, ConfigureApiVersioningOptions>();
         services.AddApiVersioning();
-            
+
         services.AddSingleton<IConfigureOptions<AuthenticationOptions>, ConfigureAuthenticationOptions>();
         services.AddAuthentication().AddJwtBearer();
         services.ConfigureOptions<ConfigureJwtBearerOptions>();
 
         services.AddControllers();
-            
+
         services.AddSingleton<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerGenOptions>();
         services.AddSwaggerGen();
-            
+
         services.AddAutoMapper(typeof(MappingProfile));
-            
+
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            
+
         services.AddScoped<IUserRepository, UserRepository>();
-            
+
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IDbService, DbService>();
@@ -76,24 +76,21 @@ public class Startup
         {
             app.UseDeveloperExceptionPage();
         }
-            
+
         app.UseSwagger(c =>
         {
             c.RouteTemplate = SwaggerBasePath + "/{documentName}/swagger/swagger.json";
-            c.PreSerializeFilters.Add((swaggerDoc, httpReq) =>
-            {
-                swaggerDoc.Servers = new List<OpenApiServer> { new() { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" } };
-            });
+            c.PreSerializeFilters.Add((swaggerDoc, httpReq) => { swaggerDoc.Servers = new List<OpenApiServer> { new() { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" } }; });
         });
-        app.UseSwaggerUI(
-            c =>
+        
+        app.UseSwaggerUI(c =>
+        {
+            foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions.OrderByDescending(x => x.ApiVersion))
             {
-                foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions.OrderByDescending(x => x.ApiVersion))
-                {
-                    c.SwaggerEndpoint($"/{SwaggerBasePath}/{description.GroupName}/swagger/swagger.json", "Riglog API " + description.GroupName.ToUpperInvariant());
-                    c.RoutePrefix = $"{SwaggerBasePath}/swagger";
-                }
-            });
+                c.SwaggerEndpoint($"/{SwaggerBasePath}/{description.GroupName}/swagger/swagger.json", "Riglog API " + description.GroupName.ToUpperInvariant());
+                c.RoutePrefix = $"{SwaggerBasePath}/swagger";
+            }
+        });
 
         app.UseHttpsRedirection();
 

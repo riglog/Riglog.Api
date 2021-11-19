@@ -8,8 +8,7 @@ public class SetVersionInPathsFilter : IDocumentFilter
 {
     public void Apply(OpenApiDocument swaggerDoc, DocumentFilterContext context)
     {
-        if (swaggerDoc == null)
-            throw new ArgumentNullException(nameof(swaggerDoc));
+        if (swaggerDoc == null) throw new ArgumentNullException(nameof(swaggerDoc));
 
         var replacements = new OpenApiPaths();
 
