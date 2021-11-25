@@ -37,11 +37,22 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
-            Configuration.GetConnectionString("SqlDatabase"),
-            opts => opts.CommandTimeout((int)TimeSpan.FromSeconds(20).TotalSeconds)
-                .MigrationsAssembly("Riglog.Api.Data.Sql")));
 
+        if (Configuration["Settings:Database"] == "PostgreSQL")
+        {
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("PostgreSqlDatabase"),
+                    opts => opts.CommandTimeout((int)TimeSpan.FromSeconds(20).TotalSeconds)
+                        .MigrationsAssembly("Riglog.Api.Data.Sql.Postgres")));
+        }
+        else
+        {
+            services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
+                Configuration.GetConnectionString("SqlDatabase"),
+                opts => opts.CommandTimeout((int)TimeSpan.FromSeconds(20).TotalSeconds)
+                    .MigrationsAssembly("Riglog.Api.Data.Sql")));
+        }
+        
         services.AddVersionedApiExplorer(o => o.GroupNameFormat = "'v'VVV");
 
         services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
@@ -82,7 +93,7 @@ public class Startup
             c.RouteTemplate = SwaggerBasePath + "/{documentName}/swagger/swagger.json";
             c.PreSerializeFilters.Add((swaggerDoc, httpReq) => { swaggerDoc.Servers = new List<OpenApiServer> { new() { Url = $"{httpReq.Scheme}://{httpReq.Host.Value}" } }; });
         });
-        
+
         app.UseSwaggerUI(c =>
         {
             foreach (var description in apiVersionDescriptionProvider.ApiVersionDescriptions.OrderByDescending(x => x.ApiVersion))

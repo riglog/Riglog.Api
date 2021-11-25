@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riglog.Api.Data.Sql", "Rigl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riglog.Api.Services", "Riglog.Api.Services\Riglog.Api.Services.csproj", "{E13E64FF-914D-468F-9BDE-6222452A281A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Riglog.Api.Data.Sql.Postgres", "Riglog.Api.Data.Sql.Postgres\Riglog.Api.Data.Sql.Postgres.csproj", "{50670595-8A47-47CC-9142-77760F17BEAD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{E13E64FF-914D-468F-9BDE-6222452A281A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E13E64FF-914D-468F-9BDE-6222452A281A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E13E64FF-914D-468F-9BDE-6222452A281A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50670595-8A47-47CC-9142-77760F17BEAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50670595-8A47-47CC-9142-77760F17BEAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50670595-8A47-47CC-9142-77760F17BEAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50670595-8A47-47CC-9142-77760F17BEAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
