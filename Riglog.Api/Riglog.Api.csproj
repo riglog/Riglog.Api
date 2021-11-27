@@ -30,6 +30,7 @@
     <None Remove="Microsoft.EntityFrameworkCore.Tools" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Riglog.Api.Data.Sql.Postgres\Riglog.Api.Data.Sql.Postgres.csproj" />
     <ProjectReference Include="..\Riglog.Api.Data.Sql\Riglog.Api.Data.Sql.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
