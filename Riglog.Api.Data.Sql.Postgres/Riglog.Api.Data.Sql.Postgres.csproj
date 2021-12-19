@@ -8,6 +8,13 @@
 
     <ItemGroup>
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.1" />
+<<<<<<< HEAD
+=======
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Riglog.Api.Data.Sql\Riglog.Api.Data.Sql.csproj" />
+>>>>>>> origin/main
     </ItemGroup>
 
 </Project>
