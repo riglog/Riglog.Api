@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Riglog.Api.Data.Sql.Entities;
@@ -10,10 +12,15 @@ namespace Riglog.Api.Services;
 public class SeedService : ISeedService
 {
     private readonly IUserRepository _userRepository;
-        
-    public SeedService(IUserRepository userRepository)
+    private readonly IOsVersionRepository _osVersionRepository;
+
+    public SeedService(
+        IUserRepository userRepository, 
+        IOsVersionRepository osVersionRepository
+    )
     {
         _userRepository = userRepository;
+        _osVersionRepository = osVersionRepository;
     }
         
     public async Task SeedAdminUserAsync(string adminPassword)
@@ -39,5 +46,45 @@ public class SeedService : ISeedService
         admin.Password = hasher.HashPassword(admin, adminPassword);
             
         await _userRepository.UpdateAsync(admin);
+    }
+
+    public Task SeedOsTypes()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task SeedOsEditions()
+    {
+        throw new NotImplementedException();
+    }
+    
+    
+    public async Task SeedOsVersions()
+    {
+        var versions = new List<OsVersion>
+        {
+            new()
+            {
+                Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                Name = "10"
+            },
+            new()
+            {
+                Id = new Guid("00000000-0000-0000-0000-000000000002"),
+                Name = "11"
+            }
+        };
+
+        foreach (var version in versions)
+        {
+            try
+            {
+                await _osVersionRepository.CreateAsync(version);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
     }
 }

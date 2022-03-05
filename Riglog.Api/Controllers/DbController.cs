@@ -50,13 +50,31 @@ public class DbController : ControllerBase
         
         return Ok();
     }
-        
+    
     /// <summary>
-    /// Create admin user
+    /// Seed values
+    /// </summary>
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpPost("seed")]
+    public async Task<IActionResult> Seed()
+    {
+        try
+        {
+            await _seedService.SeedOsVersions();
+            return Ok();
+        }
+        catch (Exception)
+        {
+            return Forbid();
+        }
+    }
+    
+    /// <summary>
+    /// Create superadmin user
     /// </summary>
     /// <param name="adminPassword">Password</param>
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [HttpPost("seed/admin")]
+    [HttpPost("seed/superadmin")]
     public async Task<IActionResult> CreateSuperAdmin([FromBody] string adminPassword)
     {
         try
