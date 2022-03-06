@@ -7,19 +7,22 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Riglog.Api.Data.Sql;
 
+#nullable disable
+
 namespace Riglog.Api.Data.Sql.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20210615190234_Init")]
-    partial class Init
+    [Migration("20220306211232_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.7")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.2")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.Computer", b =>
                 {
@@ -30,9 +33,8 @@ namespace Riglog.Api.Data.Sql.Migrations
                     b.Property<Guid>("ComputerTypeId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -44,18 +46,20 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
+                    b.Property<Guid>("OsDistributionId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("OsEditionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("OsTypeId")
+                    b.Property<Guid>("OsFamilyId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("OsVersionId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -69,9 +73,11 @@ namespace Riglog.Api.Data.Sql.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
+                    b.HasIndex("OsDistributionId");
+
                     b.HasIndex("OsEditionId");
 
-                    b.HasIndex("OsTypeId");
+                    b.HasIndex("OsFamilyId");
 
                     b.HasIndex("OsVersionId");
 
@@ -84,9 +90,8 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -98,9 +103,8 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -124,9 +128,8 @@ namespace Riglog.Api.Data.Sql.Migrations
                     b.Property<Guid>("ComputerId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -137,14 +140,13 @@ namespace Riglog.Api.Data.Sql.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("UserId")
+                    b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
@@ -160,54 +162,14 @@ namespace Riglog.Api.Data.Sql.Migrations
                     b.ToTable("ComputerUsers");
                 });
 
-            modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.OsEdition", b =>
+            modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.OsDistribution", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid?>("OsVersionId")
+                    b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IsDeleted");
-
-                    b.HasIndex("OsVersionId");
-
-                    b.ToTable("OsEditions");
-                });
-
-            modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.OsType", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -219,12 +181,88 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<Guid?>("OsEditionId")
+                    b.Property<Guid>("OsFamilyId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("UpdatedBy")
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("OsFamilyId");
+
+                    b.HasIndex("Name", "OsFamilyId")
+                        .IsUnique();
+
+                    b.ToTable("OsDistributions");
+                });
+
+            modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.OsEdition", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("OsDistributionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IsDeleted");
+
+                    b.HasIndex("OsDistributionId");
+
+                    b.HasIndex("Name", "OsDistributionId")
+                        .IsUnique();
+
+                    b.ToTable("OsEditions");
+                });
+
+            modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.OsFamily", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -236,9 +274,7 @@ namespace Riglog.Api.Data.Sql.Migrations
                     b.HasIndex("Name")
                         .IsUnique();
 
-                    b.HasIndex("OsEditionId");
-
-                    b.ToTable("OsTypes");
+                    b.ToTable("OsFamilies");
                 });
 
             modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.OsVersion", b =>
@@ -247,9 +283,8 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -259,11 +294,13 @@ namespace Riglog.Api.Data.Sql.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("OsDistributionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -271,6 +308,11 @@ namespace Riglog.Api.Data.Sql.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IsDeleted");
+
+                    b.HasIndex("OsDistributionId");
+
+                    b.HasIndex("Name", "OsDistributionId")
+                        .IsUnique();
 
                     b.ToTable("OsVersions");
                 });
@@ -281,9 +323,8 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -312,9 +353,8 @@ namespace Riglog.Api.Data.Sql.Migrations
                     b.Property<string>("Phone")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UpdatedBy")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdatedDate")
                         .HasColumnType("datetime2");
@@ -350,13 +390,19 @@ namespace Riglog.Api.Data.Sql.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Riglog.Api.Data.Sql.Entities.OsDistribution", "OsDistribution")
+                        .WithMany("Computers")
+                        .HasForeignKey("OsDistributionId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Riglog.Api.Data.Sql.Entities.OsEdition", "OsEdition")
                         .WithMany("Computers")
                         .HasForeignKey("OsEditionId");
 
-                    b.HasOne("Riglog.Api.Data.Sql.Entities.OsType", "OsType")
+                    b.HasOne("Riglog.Api.Data.Sql.Entities.OsFamily", "OsFamily")
                         .WithMany("Computers")
-                        .HasForeignKey("OsTypeId")
+                        .HasForeignKey("OsFamilyId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -366,9 +412,11 @@ namespace Riglog.Api.Data.Sql.Migrations
 
                     b.Navigation("ComputerType");
 
+                    b.Navigation("OsDistribution");
+
                     b.Navigation("OsEdition");
 
-                    b.Navigation("OsType");
+                    b.Navigation("OsFamily");
 
                     b.Navigation("OsVersion");
                 });
@@ -383,29 +431,46 @@ namespace Riglog.Api.Data.Sql.Migrations
 
                     b.HasOne("Riglog.Api.Data.Sql.Entities.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Computer");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.OsEdition", b =>
+            modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.OsDistribution", b =>
                 {
-                    b.HasOne("Riglog.Api.Data.Sql.Entities.OsVersion", "OsVersion")
-                        .WithMany("OsEdition")
-                        .HasForeignKey("OsVersionId");
+                    b.HasOne("Riglog.Api.Data.Sql.Entities.OsFamily", "OsFamily")
+                        .WithMany("OsDistributions")
+                        .HasForeignKey("OsFamilyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("OsVersion");
+                    b.Navigation("OsFamily");
                 });
 
-            modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.OsType", b =>
+            modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.OsEdition", b =>
                 {
-                    b.HasOne("Riglog.Api.Data.Sql.Entities.OsEdition", "OsEdition")
-                        .WithMany("OsTypes")
-                        .HasForeignKey("OsEditionId");
+                    b.HasOne("Riglog.Api.Data.Sql.Entities.OsDistribution", "OsDistribution")
+                        .WithMany("OsEditions")
+                        .HasForeignKey("OsDistributionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("OsEdition");
+                    b.Navigation("OsDistribution");
+                });
+
+            modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.OsVersion", b =>
+                {
+                    b.HasOne("Riglog.Api.Data.Sql.Entities.OsDistribution", "OsDistribution")
+                        .WithMany("OsVersions")
+                        .HasForeignKey("OsDistributionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OsDistribution");
                 });
 
             modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.Computer", b =>
@@ -418,23 +483,30 @@ namespace Riglog.Api.Data.Sql.Migrations
                     b.Navigation("Computers");
                 });
 
+            modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.OsDistribution", b =>
+                {
+                    b.Navigation("Computers");
+
+                    b.Navigation("OsEditions");
+
+                    b.Navigation("OsVersions");
+                });
+
             modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.OsEdition", b =>
                 {
                     b.Navigation("Computers");
-
-                    b.Navigation("OsTypes");
                 });
 
-            modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.OsType", b =>
+            modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.OsFamily", b =>
                 {
                     b.Navigation("Computers");
+
+                    b.Navigation("OsDistributions");
                 });
 
             modelBuilder.Entity("Riglog.Api.Data.Sql.Entities.OsVersion", b =>
                 {
                     b.Navigation("Computers");
-
-                    b.Navigation("OsEdition");
                 });
 #pragma warning restore 612, 618
         }

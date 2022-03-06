@@ -14,4 +14,8 @@
       <ProjectReference Include="..\Riglog.Api.Data.Sql\Riglog.Api.Data.Sql.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Migrations" />
+    </ItemGroup>
+
 </Project>

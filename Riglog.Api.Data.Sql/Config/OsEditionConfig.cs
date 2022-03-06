@@ -8,6 +8,7 @@ public class OsEditionConfig : IEntityTypeConfiguration<OsEdition>
 {
     public void Configure(EntityTypeBuilder<OsEdition> builder)
     {
+        builder.HasIndex(i => new { i.Name, i.OsDistributionId }).IsUnique();
         builder.HasIndex(i => i.IsDeleted);
     }
 }

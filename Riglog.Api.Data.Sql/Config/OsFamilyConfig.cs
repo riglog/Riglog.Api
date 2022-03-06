@@ -4,11 +4,11 @@ using Riglog.Api.Data.Sql.Entities;
 
 namespace Riglog.Api.Data.Sql.Config;
 
-public class OsVersionConfig : IEntityTypeConfiguration<OsVersion>
+public class OsFamilyConfig : IEntityTypeConfiguration<OsFamily>
 {
-    public void Configure(EntityTypeBuilder<OsVersion> builder)
+    public void Configure(EntityTypeBuilder<OsFamily> builder)
     {
-        builder.HasIndex(i => new { i.Name, i.OsDistributionId }).IsUnique();
+        builder.HasIndex(i => i.Name).IsUnique();
         builder.HasIndex(i => i.IsDeleted);
     }
 }

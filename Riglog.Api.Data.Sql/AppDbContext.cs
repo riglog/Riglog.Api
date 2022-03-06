@@ -10,9 +10,10 @@ public class AppDbContext : DbContext
     public DbSet<User> Users => Set<User>();
         
     // Operating System
-    public DbSet<OsType> OsTypes => Set<OsType>();
-    public DbSet<OsEdition> OsEditions => Set<OsEdition>();
+    public DbSet<OsFamily> OsFamilies => Set<OsFamily>();
+    public DbSet<OsDistribution> OsDistributions => Set<OsDistribution>();
     public DbSet<OsVersion> OsVersions => Set<OsVersion>();
+    public DbSet<OsEdition> OsEditions => Set<OsEdition>();
 
     // Computer
     public DbSet<Computer> Computers => Set<Computer>();

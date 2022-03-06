@@ -1,9 +1,11 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
+#nullable disable
+
 namespace Riglog.Api.Data.Sql.Migrations
 {
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,9 +17,9 @@ namespace Riglog.Api.Data.Sql.Migrations
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -25,20 +27,20 @@ namespace Riglog.Api.Data.Sql.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OsVersions",
+                name: "OsFamilies",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OsVersions", x => x.Id);
+                    table.PrimaryKey("PK_OsFamilies", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -55,9 +57,9 @@ namespace Riglog.Api.Data.Sql.Migrations
                     IsSuperAdmin = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -65,51 +67,75 @@ namespace Riglog.Api.Data.Sql.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "OsDistributions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    OsFamilyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OsDistributions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OsDistributions_OsFamilies_OsFamilyId",
+                        column: x => x.OsFamilyId,
+                        principalTable: "OsFamilies",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OsEditions",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    OsVersionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    OsDistributionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OsEditions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OsEditions_OsVersions_OsVersionId",
-                        column: x => x.OsVersionId,
-                        principalTable: "OsVersions",
+                        name: "FK_OsEditions_OsDistributions_OsDistributionId",
+                        column: x => x.OsDistributionId,
+                        principalTable: "OsDistributions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "OsTypes",
+                name: "OsVersions",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    OsEditionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    OsDistributionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OsTypes", x => x.Id);
+                    table.PrimaryKey("PK_OsVersions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OsTypes_OsEditions_OsEditionId",
-                        column: x => x.OsEditionId,
-                        principalTable: "OsEditions",
+                        name: "FK_OsVersions_OsDistributions_OsDistributionId",
+                        column: x => x.OsDistributionId,
+                        principalTable: "OsDistributions",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -119,14 +145,15 @@ namespace Riglog.Api.Data.Sql.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ComputerTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OsTypeId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OsEditionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    OsFamilyId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    OsDistributionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     OsVersionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    OsEditionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -138,23 +165,26 @@ namespace Riglog.Api.Data.Sql.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
+                        name: "FK_Computers_OsDistributions_OsDistributionId",
+                        column: x => x.OsDistributionId,
+                        principalTable: "OsDistributions",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_Computers_OsEditions_OsEditionId",
                         column: x => x.OsEditionId,
                         principalTable: "OsEditions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Computers_OsTypes_OsTypeId",
-                        column: x => x.OsTypeId,
-                        principalTable: "OsTypes",
+                        name: "FK_Computers_OsFamilies_OsFamilyId",
+                        column: x => x.OsFamilyId,
+                        principalTable: "OsFamilies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Computers_OsVersions_OsVersionId",
                         column: x => x.OsVersionId,
                         principalTable: "OsVersions",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -162,14 +192,14 @@ namespace Riglog.Api.Data.Sql.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ComputerId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedBy = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -185,7 +215,7 @@ namespace Riglog.Api.Data.Sql.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -205,14 +235,19 @@ namespace Riglog.Api.Data.Sql.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Computers_OsDistributionId",
+                table: "Computers",
+                column: "OsDistributionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Computers_OsEditionId",
                 table: "Computers",
                 column: "OsEditionId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Computers_OsTypeId",
+                name: "IX_Computers_OsFamilyId",
                 table: "Computers",
-                column: "OsTypeId");
+                column: "OsFamilyId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Computers_OsVersionId",
@@ -251,35 +286,63 @@ namespace Riglog.Api.Data.Sql.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OsDistributions_IsDeleted",
+                table: "OsDistributions",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OsDistributions_Name_OsFamilyId",
+                table: "OsDistributions",
+                columns: new[] { "Name", "OsFamilyId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OsDistributions_OsFamilyId",
+                table: "OsDistributions",
+                column: "OsFamilyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OsEditions_IsDeleted",
                 table: "OsEditions",
                 column: "IsDeleted");
 
             migrationBuilder.CreateIndex(
-                name: "IX_OsEditions_OsVersionId",
+                name: "IX_OsEditions_Name_OsDistributionId",
                 table: "OsEditions",
-                column: "OsVersionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OsTypes_IsDeleted",
-                table: "OsTypes",
-                column: "IsDeleted");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OsTypes_Name",
-                table: "OsTypes",
-                column: "Name",
+                columns: new[] { "Name", "OsDistributionId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_OsTypes_OsEditionId",
-                table: "OsTypes",
-                column: "OsEditionId");
+                name: "IX_OsEditions_OsDistributionId",
+                table: "OsEditions",
+                column: "OsDistributionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OsFamilies_IsDeleted",
+                table: "OsFamilies",
+                column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OsFamilies_Name",
+                table: "OsFamilies",
+                column: "Name",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_OsVersions_IsDeleted",
                 table: "OsVersions",
                 column: "IsDeleted");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OsVersions_Name_OsDistributionId",
+                table: "OsVersions",
+                columns: new[] { "Name", "OsDistributionId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_OsVersions_OsDistributionId",
+                table: "OsVersions",
+                column: "OsDistributionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_Email",
@@ -326,13 +389,16 @@ namespace Riglog.Api.Data.Sql.Migrations
                 name: "ComputerTypes");
 
             migrationBuilder.DropTable(
-                name: "OsTypes");
-
-            migrationBuilder.DropTable(
                 name: "OsEditions");
 
             migrationBuilder.DropTable(
                 name: "OsVersions");
+
+            migrationBuilder.DropTable(
+                name: "OsDistributions");
+
+            migrationBuilder.DropTable(
+                name: "OsFamilies");
         }
     }
 }
