@@ -73,6 +73,9 @@ public class Startup
 
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
+        services.AddScoped<IOsFamilyRepository, OsFamilyRepository>();
+        services.AddScoped<IOsDistributionRepository, OsDistributionRepository>();
+        services.AddScoped<IOsEditionRepository, OsEditionRepository>();
         services.AddScoped<IOsVersionRepository, OsVersionRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
 

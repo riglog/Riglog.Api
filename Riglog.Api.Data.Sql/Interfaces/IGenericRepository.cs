@@ -10,7 +10,7 @@ public interface IGenericRepository<TEntity> where TEntity : class
 
     public Task<TEntity> GetByIdAsync(Guid id);
 
-    public Task CreateAsync(TEntity entity);
+    public Task<Guid> CreateAsync(TEntity entity);
 
     public Task UpdateAsync(TEntity entity);
 

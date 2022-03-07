@@ -60,7 +60,7 @@ public class DbController : ControllerBase
     {
         try
         {
-            await _seedService.SeedOsVersions();
+            await _seedService.SeedOs();
             return Ok();
         }
         catch (Exception)

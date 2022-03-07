@@ -1,0 +1,42 @@
+[
+  {
+    "Name":"Linux",
+    "OsDistributions":[
+      {
+        "Name":"Debian 11 Bullseye",
+        "OsVersions":[
+          { "Name":"11" },
+          { "Name":"11.1" }
+        ]
+      },
+      {
+        "Name":"Debian 10 Buster",
+        "OsVersions":[
+          { "Name":"10" },
+          { "Name":"10.1" }
+        ]
+      },
+      {
+        "Name":"Ubuntu 21.10 Impish Indri",
+        "OsEditions":[
+          { "Name":"Desktop" },
+          { "Name":"Server" },
+          { "Name":"IoT" },
+          { "Name":"Cloud" }
+        ],
+        "OsVersions":[
+          { "Name":"21.10" }
+        ]
+      }
+    ]
+  },
+  {
+    "Name":"Windows"
+  },
+  {
+    "Name":"MacOS"
+  },
+  {
+    "Name":"BSD"
+  }
+]

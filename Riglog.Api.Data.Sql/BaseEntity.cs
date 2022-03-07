@@ -7,11 +7,11 @@ public class BaseEntity : IEntity
 
     public bool IsDeleted { get; set; }
 
-    public DateTime CreatedDate { get; set; } = DateTime.Now;
+    public DateTime CreatedDate { get; set; } = DateTime.Now.ToUniversalTime();
 
     public Guid CreatedBy { get; set; }
 
-    public DateTime UpdatedDate { get; set; } = DateTime.Now;
+    public DateTime UpdatedDate { get; set; } = DateTime.Now.ToUniversalTime();
 
     public Guid UpdatedBy { get; set; }
 }

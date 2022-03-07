@@ -28,10 +28,11 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
         return await _entities.SingleAsync(s => s.Id == id);
     }
 
-    public async Task CreateAsync(TEntity entity)
+    public async Task<Guid> CreateAsync(TEntity entity)
     {
         await _entities.AddAsync(entity);
         await _dbContext.SaveChangesAsync();
+        return entity.Id;
     }
 
     public async Task UpdateAsync(TEntity entity)

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Riglog.Api.Data.Sql.Entities;
@@ -12,15 +13,24 @@ namespace Riglog.Api.Services;
 public class SeedService : ISeedService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IOsFamilyRepository _osFamilyRepository;
+    private readonly IOsDistributionRepository _osDistributionRepository;
+    private readonly IOsEditionRepository _osEditionRepository;
     private readonly IOsVersionRepository _osVersionRepository;
 
     public SeedService(
         IUserRepository userRepository, 
-        IOsVersionRepository osVersionRepository
-    )
+        IOsVersionRepository osVersionRepository, 
+        IOsEditionRepository osEditionRepository, 
+        IOsDistributionRepository osDistributionRepository, 
+        IOsFamilyRepository osFamilyRepository
+        )
     {
         _userRepository = userRepository;
         _osVersionRepository = osVersionRepository;
+        _osEditionRepository = osEditionRepository;
+        _osDistributionRepository = osDistributionRepository;
+        _osFamilyRepository = osFamilyRepository;
     }
         
     public async Task SeedAdminUserAsync(string adminPassword)
@@ -47,43 +57,25 @@ public class SeedService : ISeedService
             
         await _userRepository.UpdateAsync(admin);
     }
-
-    public Task SeedOsTypes()
-    {
-        throw new NotImplementedException();
-    }
-
-    public Task SeedOsEditions()
-    {
-        throw new NotImplementedException();
-    }
     
     
-    public async Task SeedOsVersions()
+    public async Task SeedOs()
     {
-        var versions = new List<OsVersion>
+        var json = await new StreamReader("./Seeds/os.json").ReadToEndAsync();
+        var operatingSystems = JsonSerializer.Deserialize<List<OsFamily>>(json);
+        
+        if (operatingSystems is null) return;
+        
+        foreach (var osFamily in operatingSystems)
         {
-            new()
-            {
-                Id = new Guid("00000000-0000-0000-0000-000000000001"),
-                Name = "10"
-            },
-            new()
-            {
-                Id = new Guid("00000000-0000-0000-0000-000000000002"),
-                Name = "11"
-            }
-        };
-
-        foreach (var version in versions)
-        {
+            Guid osFamilyId;
             try
             {
-                await _osVersionRepository.CreateAsync(version);
+                osFamilyId = (await _osFamilyRepository.GetByNameAsync(osFamily.Name)).Id;
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Debug.WriteLine(e);
+                osFamilyId = await _osFamilyRepository.CreateAsync(osFamily);
             }
         }
     }
