@@ -61,7 +61,7 @@ public class SeedService : ISeedService
     
     public async Task SeedOs()
     {
-        var json = await new StreamReader("./Seeds/os.json").ReadToEndAsync();
+        var json = await new StreamReader("./Jsons/os.json").ReadToEndAsync();
         var operatingSystems = JsonSerializer.Deserialize<List<OsFamily>>(json);
         
         if (operatingSystems is null) return;
