@@ -77,6 +77,54 @@ public class SeedService : ISeedService
             {
                 osFamilyId = await _osFamilyRepository.CreateAsync(osFamily);
             }
+            
+            if (osFamily.OsDistributions is null) continue;
+            
+            foreach (var osDistribution in osFamily.OsDistributions)
+            {
+                Guid osDistributionId;
+                try
+                {
+                    osDistributionId = (await _osDistributionRepository.GetByNameAsync(osFamilyId, osDistribution.Name)).Id;
+                }
+                catch (Exception)
+                {
+                    osDistribution.OsFamilyId = osFamilyId;
+                    osDistributionId = await _osDistributionRepository.CreateAsync(osDistribution);
+                }
+
+                if (osDistribution.OsEditions is not null)
+                {
+                    foreach (var osEdition in osDistribution.OsEditions)
+                    {
+                        try
+                        {
+                            await _osEditionRepository.GetByNameAsync(osDistributionId, osEdition.Name);
+                        }
+                        catch (Exception)
+                        {
+                            osEdition.OsDistributionId = osDistributionId;
+                            await _osEditionRepository.CreateAsync(osEdition);
+                        }
+                    }
+                }
+                
+                if (osDistribution.OsVersions is not null)
+                {
+                    foreach (var osVersion in osDistribution.OsVersions)
+                    {
+                        try
+                        {
+                            await _osVersionRepository.GetByNameAsync(osDistributionId, osVersion.Name);
+                        }
+                        catch (Exception)
+                        {
+                            osVersion.OsDistributionId = osDistributionId;
+                            await _osVersionRepository.CreateAsync(osVersion);
+                        }
+                    }
+                }
+            }
         }
     }
 }

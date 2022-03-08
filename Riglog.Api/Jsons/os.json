@@ -31,7 +31,22 @@
     ]
   },
   {
-    "Name":"Windows"
+    "Name":"Windows",
+    "OsDistributions": [
+      {
+        "Name": "Windows 10",
+        "OsEditions":[
+          { "Name":"Home" },
+          { "Name":"Professional" }
+        ],
+        "OsVersions":[
+          { "Name":"10" }
+        ]
+      },
+      {
+        "Name": "Windows 11"
+      }
+    ]
   },
   {
     "Name":"MacOS"
