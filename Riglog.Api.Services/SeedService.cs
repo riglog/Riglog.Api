@@ -17,13 +17,15 @@ public class SeedService : ISeedService
     private readonly IOsDistributionRepository _osDistributionRepository;
     private readonly IOsEditionRepository _osEditionRepository;
     private readonly IOsVersionRepository _osVersionRepository;
+    private readonly IComputerTypeRepository _computerTypeRepository;
 
     public SeedService(
         IUserRepository userRepository, 
         IOsVersionRepository osVersionRepository, 
         IOsEditionRepository osEditionRepository, 
         IOsDistributionRepository osDistributionRepository, 
-        IOsFamilyRepository osFamilyRepository
+        IOsFamilyRepository osFamilyRepository,
+        IComputerTypeRepository computerTypeRepository
         )
     {
         _userRepository = userRepository;
@@ -31,6 +33,7 @@ public class SeedService : ISeedService
         _osEditionRepository = osEditionRepository;
         _osDistributionRepository = osDistributionRepository;
         _osFamilyRepository = osFamilyRepository;
+        _computerTypeRepository = computerTypeRepository;
     }
         
     public async Task SeedAdminUserAsync(string adminPassword)
@@ -59,9 +62,9 @@ public class SeedService : ISeedService
     }
     
     
-    public async Task SeedOs()
+    public async Task SeedOperatingSystemsAsync()
     {
-        var json = await new StreamReader("./Jsons/os.json").ReadToEndAsync();
+        var json = await new StreamReader("./Jsons/operating_systems.json").ReadToEndAsync();
         var operatingSystems = JsonSerializer.Deserialize<List<OsFamily>>(json);
         
         if (operatingSystems is null) return;
@@ -124,6 +127,26 @@ public class SeedService : ISeedService
                         }
                     }
                 }
+            }
+        }
+    }
+
+    public async Task SeedComputerTypesAsync()
+    {
+        var json = await new StreamReader("./Jsons/computer_types.json").ReadToEndAsync();
+        var computerTypes = JsonSerializer.Deserialize<List<ComputerType>>(json);
+        
+        if (computerTypes is null) return;
+
+        foreach (var computerType in computerTypes)
+        {
+            try
+            {
+                await _computerTypeRepository.GetByNameAsync(computerType.Name);
+            }
+            catch (Exception)
+            {
+                await _computerTypeRepository.CreateAsync(computerType);
             }
         }
     }

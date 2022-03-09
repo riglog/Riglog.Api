@@ -5,6 +5,6 @@ namespace Riglog.Api.Services.Interfaces;
 public interface ISeedService
 {
     public Task SeedAdminUserAsync(string adminPassword);
-
-    public Task SeedOs();
+    public Task SeedOperatingSystemsAsync();
+    public Task SeedComputerTypesAsync();
 }

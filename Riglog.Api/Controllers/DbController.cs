@@ -61,7 +61,8 @@ public class DbController : ControllerBase
     {
         try
         {
-            await _seedService.SeedOs();
+            await _seedService.SeedOperatingSystemsAsync();
+            await _seedService.SeedComputerTypesAsync();
             return Ok();
         }
         catch (Exception e)

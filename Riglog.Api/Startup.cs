@@ -78,6 +78,7 @@ public class Startup
         services.AddScoped<IOsEditionRepository, OsEditionRepository>();
         services.AddScoped<IOsVersionRepository, OsVersionRepository>();
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IComputerTypeRepository, ComputerTypeRepository>();
 
         services.AddScoped<IUserService, UserService>();
         services.AddScoped<IAuthService, AuthService>();
