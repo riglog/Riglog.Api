@@ -121,7 +121,7 @@ public class UserController : ControllerBase
     /// <response code="200">Success</response>
     /// <response code="404">Not Found</response>
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [HttpPatch("{userId:guid}/set-password")]
+    [HttpPatch("{userId:guid}/password")]
     public async Task<IActionResult> SetPassword(Guid userId, [FromBody] string password)
     {
         try
