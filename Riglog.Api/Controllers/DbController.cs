@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Riglog.Api.Services.Interfaces;
+using Swashbuckle.AspNetCore.Annotations;
 
 
 namespace Riglog.Api.Controllers;
@@ -33,6 +34,7 @@ public class DbController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status202Accepted, Type = typeof(List<string>))]
     [HttpGet("check")]
+    [SwaggerOperation(Tags = new[] { "Database - Migrations" })]
     public async Task<IActionResult> MigrationsCheck()
     {
         var migrations = await _dbService.GetMigrationsAsync();
@@ -45,6 +47,7 @@ public class DbController : ControllerBase
     /// </summary>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpPatch("update")]
+    [SwaggerOperation(Tags = new[] { "Database - Migrations" })]
     public async Task<IActionResult> Migrate()
     {
         await _dbService.MigrateAsync();
@@ -57,6 +60,7 @@ public class DbController : ControllerBase
     /// </summary>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpPost("seed")]
+    [SwaggerOperation(Tags = new[] { "Database - Seed data" })]
     public async Task<IActionResult> Seed()
     {
         try
@@ -78,6 +82,7 @@ public class DbController : ControllerBase
     /// <param name="adminPassword">Password</param>
     [ProducesResponseType(StatusCodes.Status200OK)]
     [HttpPost("seed/superadmin")]
+    [SwaggerOperation(Tags = new[] { "Database - Seed data" })]
     public async Task<IActionResult> CreateSuperAdmin([FromBody] string adminPassword)
     {
         try

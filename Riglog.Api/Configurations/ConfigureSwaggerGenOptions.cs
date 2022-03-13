@@ -23,6 +23,8 @@ internal class ConfigureSwaggerGenOptions : IConfigureOptions<SwaggerGenOptions>
     {
         foreach (var description in _provider.ApiVersionDescriptions)
         {
+            options.EnableAnnotations();
+
             options.SwaggerDoc(
                 description.GroupName,
                 new OpenApiInfo

@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Riglog.Api.Services.Interfaces;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Riglog.Api.Controllers;
 
@@ -27,6 +28,7 @@ public class AuthController : ControllerBase
     /// <returns>Token</returns>
     [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(string))]
     [HttpPost("login")]
+    [SwaggerOperation(Tags = new[] { "Authentication" })]
     public async Task<IActionResult> Login(string username, string password)
     {
         try
