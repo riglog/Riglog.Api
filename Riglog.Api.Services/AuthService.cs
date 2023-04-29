@@ -29,12 +29,12 @@ public class AuthService : IAuthService
         var hasher = new PasswordHasher<User>();
         var user = await _userRepository.GetByUsernameAsync(username);
                 
-        if (hasher.VerifyHashedPassword(user, user.Password, password) == 0)
+        if (user.Password != null && hasher.VerifyHashedPassword(user, user.Password, password) == 0)
         {
             throw new Exception();
         }
                 
-        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("AuthSettings:SecretKey")));
+        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetValue<string>("AuthSettings:SecretKey") ?? string.Empty));
         var signinCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha512);
 
         var claims = new List<Claim>
