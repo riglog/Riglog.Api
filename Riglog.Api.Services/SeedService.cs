@@ -111,20 +111,19 @@ public class SeedService : ISeedService
                         }
                     }
                 }
+
+                if (osDistribution.OsVersions is null) continue;
                 
-                if (osDistribution.OsVersions is not null)
+                foreach (var osVersion in osDistribution.OsVersions)
                 {
-                    foreach (var osVersion in osDistribution.OsVersions)
+                    try
                     {
-                        try
-                        {
-                            await _osVersionRepository.GetByNameAsync(osDistributionId, osVersion.Name);
-                        }
-                        catch (Exception)
-                        {
-                            osVersion.OsDistributionId = osDistributionId;
-                            await _osVersionRepository.CreateAsync(osVersion);
-                        }
+                        await _osVersionRepository.GetByNameAsync(osDistributionId, osVersion.Name);
+                    }
+                    catch (Exception)
+                    {
+                        osVersion.OsDistributionId = osDistributionId;
+                        await _osVersionRepository.CreateAsync(osVersion);
                     }
                 }
             }

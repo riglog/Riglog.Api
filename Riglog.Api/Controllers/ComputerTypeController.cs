@@ -10,9 +10,4 @@ namespace Riglog.Api.Controllers;
 [Produces("application/json")]
 public class ComputerTypeController : ControllerBase
 {
-
-    public ComputerTypeController()
-    {
-
-    }
 }
